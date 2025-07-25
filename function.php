@@ -16,7 +16,7 @@ const b = "\033[1;34m";
 const u = "\033[1;35m";  
 const c = "\033[1;36m";  
 const p = "\033[1;37m";  
-
+const bp = "\033[104m\033[1;37m";
 #FUNCTION CURL 
 function Curl($url, $h = [], $data = 0){
   while(true){
@@ -44,6 +44,7 @@ function Curl($url, $h = [], $data = 0){
     return $response;
   }
 }
+
 #FUNCTION SIMPAN DATA
 function Simpan($key){
   $nama_file = 'data.json';
@@ -84,7 +85,8 @@ function ipApi(){
   if($r->status == 'success')return $r;
 }
 # FUNCTION BANNER
-function Baner($name, $ver){
+function Baner($name, $ver, $title){
+  clear();
   $api = ipApi();
   if($api){
     date_default_timezone_set($api->timezone);
@@ -94,6 +96,32 @@ function Baner($name, $ver){
   print p.str_pad(strtoupper("Author -> AmjadYt"),44, " ", STR_PAD_BOTH)."\n";
   print p.str_pad(strtoupper("name script -> {$name}"),44, " ", STR_PAD_BOTH)."\n";
   print p.str_pad(strtoupper("version -> {$ver}"),44, " ", STR_PAD_BOTH)."\n";
+  print bp.str_pad(strtoupper('-').strtoupper($title),44, " ",STR_PAD_BOTH)."\n".d;
   line();
 }
+#FUNCTION TMR 
+function Tmr($tmr){
+  date_default_timezone_set("UTC");
+  $sym = [' ─ ',' / ',' │ ',' \ ',];
+  $timr = time()+$tmr;
+  $a = 0;
+  while(true){
+    $a +=1;
+    $res=$timr-time();
+    if($res < 1) {
+      break;
+    }
+    print $sym[$a % 4].p.date('H',$res).":".p.date('i',$res).":".p.date('s',$res)."\r";
+    usleep(100000);
+  }
+  print "\r           \r";
+}
 
+#CLEAR TERMINAL 
+function Clear(){
+  if( PHP_OS_FAMILY == "Linux" ){
+    system('clear');
+	}else{
+	  pclose(popen('cls','w'));
+	}
+} 
